@@ -1,0 +1,270 @@
+{
+  "results": {
+    "lambada_openai": {
+      "name": "lambada_openai",
+      "alias": "lambada_openai",
+      "sample_len": 5153,
+      "perplexity,none": 19.259812716939525,
+      "perplexity_stderr,none": 0.6355115439019721,
+      "acc,none": 0.42829419755482245,
+      "acc_stderr,none": 0.006893971254195014
+    },
+    "hellaswag": {
+      "name": "hellaswag",
+      "alias": "hellaswag",
+      "sample_len": 10042,
+      "acc,none": 0.3552081258713404,
+      "acc_stderr,none": 0.004775982650355569,
+      "acc_norm,none": 0.4311890061740689,
+      "acc_norm_stderr,none": 0.004942302768002109
+    },
+    "piqa": {
+      "name": "piqa",
+      "alias": "piqa",
+      "sample_len": 1838,
+      "acc,none": 0.6838955386289445,
+      "acc_stderr,none": 0.010848148455700339,
+      "acc_norm,none": 0.6844396082698585,
+      "acc_norm_stderr,none": 0.010843119201758775
+    }
+  },
+  "group_subtasks": {},
+  "configs": {
+    "hellaswag": {
+      "task": "hellaswag",
+      "dataset_path": "Rowan/hellaswag",
+      "training_split": "train",
+      "validation_split": "validation",
+      "process_docs": "def process_docs(dataset: datasets.Dataset) -> datasets.Dataset:\n    def _process_doc(doc):\n        ctx = doc[\"ctx_a\"] + \" \" + doc[\"ctx_b\"].capitalize()\n        out_doc = {\n            \"query\": preprocess(doc[\"activity_label\"] + \": \" + ctx),\n            \"choices\": [preprocess(ending) for ending in doc[\"endings\"]],\n            \"gold\": int(doc[\"label\"]),\n        }\n        return out_doc\n\n    return dataset.map(_process_doc)\n",
+      "doc_to_text": "{{query}}",
+      "doc_to_target": "{{label}}",
+      "unsafe_code": false,
+      "doc_to_choice": "choices",
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "fewshot_config": {
+        "sampler": "default",
+        "split": null,
+        "process_docs": "<function process_docs at 0x0000028F4584AAC0>",
+        "fewshot_indices": null,
+        "samples": null,
+        "doc_to_text": "{{query}}",
+        "doc_to_choice": "choices",
+        "doc_to_target": "{{label}}",
+        "gen_prefix": null,
+        "fewshot_delimiter": "\n\n",
+        "target_delimiter": " "
+      },
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "acc",
+          "aggregation": "mean",
+          "higher_is_better": true
+        },
+        {
+          "metric": "acc_norm",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "multiple_choice",
+      "repeats": 1,
+      "should_decontaminate": false,
+      "metadata": {
+        "version": 1.0,
+        "pretrained": "HuggingFaceTB/SmolLM2-135M",
+        "dtype": "float16",
+        "config_source": "C:\\home\\szkoła\\drugi stopień\\smollm2-dus\\.venv\\Lib\\site-packages\\lm_eval\\tasks\\hellaswag\\hellaswag.yaml"
+      }
+    },
+    "lambada_openai": {
+      "task": "lambada_openai",
+      "dataset_path": "EleutherAI/lambada_openai",
+      "dataset_name": "default",
+      "test_split": "test",
+      "doc_to_text": "{{text.split(' ')[:-1]|join(' ')}}",
+      "doc_to_target": "{{' '+text.split(' ')[-1]}}",
+      "unsafe_code": false,
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "fewshot_config": {
+        "sampler": "default",
+        "split": null,
+        "process_docs": null,
+        "fewshot_indices": null,
+        "samples": null,
+        "doc_to_text": "{{text.split(' ')[:-1]|join(' ')}}",
+        "doc_to_choice": null,
+        "doc_to_target": "{{' '+text.split(' ')[-1]}}",
+        "gen_prefix": null,
+        "fewshot_delimiter": "\n\n",
+        "target_delimiter": " "
+      },
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "perplexity",
+          "aggregation": "perplexity",
+          "higher_is_better": false
+        },
+        {
+          "metric": "acc",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "loglikelihood",
+      "repeats": 1,
+      "should_decontaminate": true,
+      "doc_to_decontamination_query": "{{text}}",
+      "metadata": {
+        "version": 1.0,
+        "pretrained": "HuggingFaceTB/SmolLM2-135M",
+        "dtype": "float16",
+        "config_source": "C:\\home\\szkoła\\drugi stopień\\smollm2-dus\\.venv\\Lib\\site-packages\\lm_eval\\tasks\\lambada\\lambada_openai.yaml"
+      }
+    },
+    "piqa": {
+      "task": "piqa",
+      "dataset_path": "baber/piqa",
+      "training_split": "train",
+      "validation_split": "validation",
+      "doc_to_text": "Question: {{goal}}\nAnswer:",
+      "doc_to_target": "label",
+      "unsafe_code": false,
+      "doc_to_choice": "{{[sol1, sol2]}}",
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "fewshot_config": {
+        "sampler": "default",
+        "split": null,
+        "process_docs": null,
+        "fewshot_indices": null,
+        "samples": null,
+        "doc_to_text": "Question: {{goal}}\nAnswer:",
+        "doc_to_choice": "{{[sol1, sol2]}}",
+        "doc_to_target": "label",
+        "gen_prefix": null,
+        "fewshot_delimiter": "\n\n",
+        "target_delimiter": " "
+      },
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "acc",
+          "aggregation": "mean",
+          "higher_is_better": true
+        },
+        {
+          "metric": "acc_norm",
+          "aggregation": "mean",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "multiple_choice",
+      "repeats": 1,
+      "should_decontaminate": true,
+      "doc_to_decontamination_query": "goal",
+      "metadata": {
+        "version": 1.0,
+        "pretrained": "HuggingFaceTB/SmolLM2-135M",
+        "dtype": "float16",
+        "config_source": "C:\\home\\szkoła\\drugi stopień\\smollm2-dus\\.venv\\Lib\\site-packages\\lm_eval\\tasks\\piqa\\piqa.yaml"
+      }
+    }
+  },
+  "versions": {
+    "hellaswag": 1.0,
+    "lambada_openai": 1.0,
+    "piqa": 1.0
+  },
+  "n-shot": {
+    "hellaswag": 0,
+    "lambada_openai": 0,
+    "piqa": 0
+  },
+  "higher_is_better": {
+    "hellaswag": {
+      "acc": true,
+      "acc_norm": true
+    },
+    "lambada_openai": {
+      "perplexity": false,
+      "acc": true
+    },
+    "piqa": {
+      "acc": true,
+      "acc_norm": true
+    }
+  },
+  "n-samples": {
+    "lambada_openai": {
+      "original": 5153,
+      "effective": 5153
+    },
+    "hellaswag": {
+      "original": 10042,
+      "effective": 10042
+    },
+    "piqa": {
+      "original": 1838,
+      "effective": 1838
+    }
+  },
+  "config": {
+    "model": "hf",
+    "model_args": {
+      "pretrained": "HuggingFaceTB/SmolLM2-135M",
+      "dtype": "float16"
+    },
+    "model_num_parameters": 134515008,
+    "model_dtype": "torch.float16",
+    "model_revision": "main",
+    "model_sha": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+    "batch_size": "1",
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "use_cache": null,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": {},
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234
+  },
+  "git_hash": null,
+  "date": 1791037491.3962386,
+  "pretty_env_info": "PyTorch version: 2.14.0+cu126\nIs debug build: False\nCUDA used to build PyTorch: 12.6\nROCM used to build PyTorch: N/A\n\nOS: Microsoft Windows 11 Home (10.0.26200 64-bitowy)\nGCC version: Could not collect\nClang version: Could not collect\nCMake version: version 4.1.2\nLibc version: N/A\n\nPython version: 3.12.10 | packaged by conda-forge | (main, Apr 10 2025, 22:08:16) [MSC v.1943 64 bit (AMD64)] (64-bit runtime)\nPython platform: Windows-11-10.0.26200-SP0\nIs CUDA available: True\nCUDA runtime version: Could not collect\nCUDA_MODULE_LOADING set to: \nGPU models and configuration: GPU 0: NVIDIA GeForce RTX 3050 Laptop GPU\nNvidia driver version: 596.36\ncuDNN version: Could not collect\nIs XPU available: False\nHIP runtime version: N/A\nMIOpen runtime version: N/A\nIs XNNPACK available: False\nCaching allocator config: N/A\n\nCPU:\nName: 12th Gen Intel(R) Core(TM) i7-12650H\nManufacturer: GenuineIntel\nFamily: 198\nArchitecture: 9\nProcessorType: 3\nDeviceID: CPU0\nCurrentClockSpeed: 2300\nMaxClockSpeed: 2300\nL2CacheSize: 9728\nL2CacheSpeed: None\nRevision: None\n\nVersions of relevant libraries:\n[pip3] numpy==2.5.3\n[pip3] torch==2.14.0+cu126\n[conda] Could not collect",
+  "transformers_version": "4.57.6",
+  "lm_eval_version": "0.4.13",
+  "upper_git_hash": null,
+  "tokenizer_pad_token": [
+    "<|endoftext|>",
+    "0"
+  ],
+  "tokenizer_eos_token": [
+    "<|endoftext|>",
+    "0"
+  ],
+  "tokenizer_bos_token": [
+    "<|endoftext|>",
+    "0"
+  ],
+  "eot_token_id": 0,
+  "max_length": 8192,
+  "task_hashes": {},
+  "model_source": "hf",
+  "model_name": "HuggingFaceTB/SmolLM2-135M",
+  "model_name_sanitized": "HuggingFaceTB__SmolLM2-135M",
+  "system_instruction": null,
+  "system_instruction_sha": null,
+  "fewshot_as_multiturn": null,
+  "chat_template": null,
+  "chat_template_sha": null,
+  "total_evaluation_time_seconds": "2357.4725635000505"
+}
