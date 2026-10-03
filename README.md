@@ -217,3 +217,6 @@ raw = load_dataset(
     "Salesforce/wikitext",
     "wikitext-103-raw-v1",
 )
+
+## Link do modelu
+https://huggingface.co/spahbod/smollm2-dus-40l 
