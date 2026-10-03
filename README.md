@@ -200,11 +200,16 @@ python -m lm_eval `
   --output_path outputs/smollm2-dus-40l/benchmarks_base
 ```
 
-Benchmark	              Model bazowy	  DUS + trening	        Zmiana
-HellaSwag acc_norm	    43,12%	          41,25%	            −1,87 p.p.
-LAMBADA acc	            42,83%	          37,75%	            −5,08 p.p.
-LAMBADA perplexity	    19,26	            27,44	              +8,18 — gorzej
-PIQA acc_norm	          68,44%	          65,18%	            −3,26 p.p.
+## Benchmark results
+
+| Benchmark | Metric | Base model | DUS + continued pretraining | Change |
+|:--|:--|--:|--:|--:|
+| HellaSwag | Accuracy normalized (`acc_norm`) | **43.12%** | 41.25% | −1.87 p.p. |
+| LAMBADA OpenAI | Accuracy (`acc`) | **42.83%** | 37.75% | −5.08 p.p. |
+| LAMBADA OpenAI | Perplexity (`ppl`) ↓ | **19.26** | 27.44 | +8.18 |
+| PIQA | Accuracy normalized (`acc_norm`) | **68.44%** | 65.18% | −3.26 p.p. |
+
+> Higher accuracy is better, while lower perplexity is better. The DUS model achieved better loss and perplexity on WikiText-2 but performed worse on all three external benchmarks, indicating reduced generalization.
 
 ## Dalsze prace
 WikiText-103 – większy zbiór.
